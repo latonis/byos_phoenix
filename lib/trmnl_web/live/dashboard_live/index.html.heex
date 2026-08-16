@@ -2,17 +2,15 @@
   Dashboard
 </.header>
 
-<%!-- latest screen carousel, looks like a small screen --%>
-<div class="relative w-full max-w mx-auto">
-  <div class="overflow-hidden rounded-2xl shadow-2xl">   <!-- no bg-gray-900 -->
+<div class="relative w-full mx-auto">
+  <div class="overflow-hidden rounded-2xl">
     <div
       class="flex transition-transform duration-300 ease-in-out"
       style={"transform: translateX(-#{@current_index * 100}%)"}
     >
       <%= for device <- @devices do %>
         <div class="min-w-full shrink-0 p-2 flex items-center justify-center">
-          <!-- Device frame – transparent, fixed size -->
-          <div class="relative rounded-2xl overflow-hidden shadow-inner border-2 border-white/30 w-full">
+          <div class="relative rounded-2xl overflow-hidden border-2 border-white/30 w-full">
             <div
               class="w-full h-[400px] rounded-lg bg-center bg-no-repeat"
               style={"background-image: url(#{device.latest_screen}); background-size: contain; background-color: transparent;"}
