@@ -41,3 +41,6 @@ npm-debug.log
 *.db-*
 
 .DS_Store
+
+# elixir language server
+.elixir_ls/
