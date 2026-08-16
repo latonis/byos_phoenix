@@ -8,6 +8,8 @@ defmodule TrmnlWeb.Router do
     plug :put_root_layout, html: {TrmnlWeb.Layouts, :root}
     plug :protect_from_forgery
     plug :put_secure_browser_headers
+
+    plug :set_session_ip
   end
 
   pipeline :api do
@@ -20,6 +22,9 @@ defmodule TrmnlWeb.Router do
     get "/", PageController, :home
 
     get "/screens/:api_key", ScreenController, :show
+
+
+    live "/dashboard", DashboardLive.Index, :index
 
     live "/devices", DeviceLive.Index, :index
     live "/devices/new", DeviceLive.Index, :new
@@ -37,4 +42,14 @@ defmodule TrmnlWeb.Router do
     get "/display", APIController, :display
     post "/log", APIController, :log
   end
+
+  defp set_session_ip(conn, _opts) do
+    ip = to_string(:inet.ntoa(conn.remote_ip))
+    host = conn.host
+
+    conn
+    |> Plug.Conn.put_session("ip", ip)
+    |> Plug.Conn.put_session("host", host)
+  end
+
 end

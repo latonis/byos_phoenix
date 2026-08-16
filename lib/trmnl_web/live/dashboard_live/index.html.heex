@@ -1,0 +1,113 @@
+<.header>
+  Dashboard
+</.header>
+
+<%!-- latest screen carousel, looks like a small screen --%>
+<div class="relative w-full max-w mx-auto">
+  <div class="overflow-hidden rounded-2xl shadow-2xl">   <!-- no bg-gray-900 -->
+    <div
+      class="flex transition-transform duration-300 ease-in-out"
+      style={"transform: translateX(-#{@current_index * 100}%)"}
+    >
+      <%= for device <- @devices do %>
+        <div class="min-w-full shrink-0 p-2 flex items-center justify-center">
+          <!-- Device frame – transparent, fixed size -->
+          <div class="relative rounded-2xl overflow-hidden shadow-inner border-2 border-white/30 w-full">
+            <div
+              class="w-full h-[400px] rounded-lg bg-center bg-no-repeat"
+              style={"background-image: url(#{device.latest_screen}); background-size: contain; background-color: transparent;"}
+            ></div>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  </div>
+
+  <button
+    phx-click="previous"
+    class="absolute top-1/2 left-2 -translate-y-1/2 bg-white/80 hover:bg-white p-2 rounded-full shadow-lg transition z-10"
+    aria-label="Previous"
+  >
+    ❮
+  </button>
+  <button
+    phx-click="next"
+    class="absolute top-1/2 right-2 -translate-y-1/2 bg-white/80 hover:bg-white p-2 rounded-full shadow-lg transition z-10"
+    aria-label="Next"
+  >
+    ❯
+  </button>
+
+  <div class="flex justify-center gap-2 mt-4">
+    <%= for device <- @devices do %>
+      <button
+        phx-click="set-index"
+        phx-value-index={device.index}
+        class={"h-2 w-2 rounded-full transition-colors #{if device.index == @current_index, do: "bg-blue-600", else: "bg-gray-300"}"}
+      />
+    <% end %>
+  </div>
+</div>
+<%!-- columns --%>
+<div>
+  <div class="grid gap-6">
+    <!-- Column 1 -->
+    <div class="bg-white rounded-lg shadow">
+      <div class="px-6 py-4 border-b border-gray-200">
+        <h2 class="text-lg font-semibold text-gray-900">Devices</h2>
+      </div>
+      <div class="overflow-x-auto p-2">
+        <%= for device <- @devices do %>
+          <div class="py-1">
+            <a href={"/devices/#{device.id}"} class="block group">
+              <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-4 hover:shadow-md transition-all duration-200">
+                <div class="flex items-center justify-between">
+                  <h3 class="text-sm font-semibold text-gray-800 group-hover:text-blue-600 transition-colors">
+                    {device.name}
+                  </h3>
+                </div>
+                <div class="mt-2 flex items-center text-xs text-gray-500">
+                  <svg
+                    class="w-4 h-4 mr-1 text-gray-400"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
+                    />
+                  </svg>
+                  <span>Updated: {format_datetime(device.screen_generated_at)}</span>
+                </div>
+              </div>
+            </a>
+          </div>
+        <% end %>
+      </div>
+    </div>
+
+<!-- Column 2 -->
+    <div class="bg-white rounded-lg shadow">
+      <div class="px-6 py-4 border-b border-gray-200">
+        <h2 class="text-lg font-semibold text-gray-900">Network Configuration</h2>
+      </div>
+      <div class="p-4 space-y-3">
+        <div class="flex justify-between items-center border-b border-gray-100 pb-2">
+          <span class="text-sm font-medium text-gray-500">Host</span>
+          <span class="font-mono text-sm text-gray-800 bg-gray-50 px-3 py-1 rounded break-all">
+            {@host}
+          </span>
+        </div>
+        <div class="flex justify-between items-center">
+          <span class="text-sm font-medium text-gray-500">IP Address</span>
+          <span class="font-mono text-sm text-gray-800 bg-gray-50 px-3 py-1 rounded">
+            {@ip}
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
