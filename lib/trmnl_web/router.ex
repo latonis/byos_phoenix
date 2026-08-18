@@ -23,7 +23,6 @@ defmodule TrmnlWeb.Router do
 
     get "/screens/:api_key", ScreenController, :show
 
-
     live "/dashboard", DashboardLive.Index, :index
 
     live "/devices", DeviceLive.Index, :index
@@ -51,5 +50,4 @@ defmodule TrmnlWeb.Router do
     |> Plug.Conn.put_session("ip", ip)
     |> Plug.Conn.put_session("host", host)
   end
-
 end
